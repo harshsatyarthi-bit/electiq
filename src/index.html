@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ElectIQ — Animated India Election Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#080f1e;--navy2:#0f1a2e;--navy3:#162035;--navy4:#1e2b45;--navy5:#263354;
+  --gold:#e8a020;--gold2:#f5b942;--gold3:#fdd67a;--golddim:rgba(232,160,32,.14);
+  --goldglow:rgba(232,160,32,.4);--saffron:#ff8c00;
+  --green:#138808;--greenlt:rgba(19,136,8,.18);
+  --red:#e53935;--redlt:rgba(229,57,53,.15);
+  --sky:#4fc3f7;--skylt:rgba(79,195,247,.12);
+  --purple:#9334e6;--purplelt:rgba(147,52,230,.14);
+  --white:#f0eee8;--white2:#c8c4bc;--muted:#7a8299;
+  --border:rgba(255,255,255,.08);--border2:rgba(232,160,32,.28);
+  --surface:rgba(255,255,255,.04);
+  --r:14px;--rsm:8px;--rpill:999px;
+  --fdisplay:'Cormorant Garamond',serif;
+  --fbody:'Outfit',sans-serif;
+  --sgold:0 0 28px rgba(232,160,32,.22);
+  --scard:0 4px 28px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fbody);background:var(--navy);color:var(--white);min-height:100vh;font-size:14px;line-height:1.6;overflow-x:hidden}
+
+/* ── ANIMATED PARTICLE CANVAS BG ── */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+
+/* ── GRAIN ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.7}
+
+/* ── RADIAL AMBIENT ── */
+.ambient{position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:90vw;height:55vh;background:radial-gradient(ellipse at center,rgba(232,160,32,.055) 0%,transparent 68%);pointer-events:none;z-index:1}
+
+/* ══ HEADER ══ */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(8,15,30,.82);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-bottom:1px solid var(--border);padding:0 2rem;height:62px;display:flex;align-items:center;gap:1.25rem}
+.logo{font-family:var(--fdisplay);font-size:24px;font-weight:700;display:flex;align-items:center;gap:9px;letter-spacing:-.2px}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--saffron));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 12px rgba(232,160,32,.35)}
+.logo span{color:var(--gold)}
+.hbadge{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:var(--golddim);color:var(--gold2);padding:3px 11px;border-radius:var(--rpill);border:1px solid var(--border2)}
+.htabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:3px;border-radius:11px;border:1px solid var(--border)}
+.htab{padding:6px 16px;border-radius:9px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:var(--fbody);transition:all .22s;letter-spacing:.01em}
+.htab.active{background:linear-gradient(135deg,var(--gold),var(--saffron));color:var(--navy);font-weight:600;box-shadow:0 2px 10px rgba(232,160,32,.4)}
+.htab:hover:not(.active){color:var(--white2)}
+
+/* ══ LAYOUT ══ */
+.body{max-width:920px;margin:0 auto;padding:2rem 1.5rem 5rem;position:relative;z-index:2}
+.view{display:none;animation:fadeUp .35s ease}
+.view.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ HERO ══ */
+.hero{background:linear-gradient(135deg,var(--navy3) 0%,var(--navy4) 100%);border:1px solid var(--border2);border-radius:var(--r);padding:2rem 2.5rem 1.75rem;margin-bottom:1.5rem;position:relative;overflow:hidden;box-shadow:var(--scard),var(--sgold)}
+.hero-deco{position:absolute;right:2rem;top:50%;transform:translateY(-50%);opacity:.12;font-size:100px;filter:grayscale(1);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(-50%) rotate(-5deg)}50%{transform:translateY(calc(-50% - 10px)) rotate(5deg)}}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eye{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);margin-bottom:.75rem}
+.hero-eye::before{content:'';display:block;width:24px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hero h1{font-family:var(--fdisplay);font-size:34px;font-weight:700;line-height:1.13;margin-bottom:.5rem;background:linear-gradient(135deg,var(--white) 0%,var(--gold3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:13px;color:var(--muted);max-width:500px;line-height:1.75;margin-bottom:1.5rem}
+.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hs{background:rgba(255,255,255,.04);border-radius:10px;padding:12px 14px;border:1px solid var(--border);transition:border-color .22s,background .22s,transform .22s;cursor:default}
+.hs:hover{border-color:var(--border2);background:rgba(232,160,32,.07);transform:translateY(-2px)}
+.hs-val{font-family:var(--fdisplay);font-size:24px;font-weight:700;color:var(--gold2);line-height:1}
+.hs-lbl{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ══ ANIMATED SCENE PANEL ══ */
+.scene-panel{background:var(--navy3);border:1px solid var(--border2);border-radius:var(--r);padding:0;margin-bottom:1.25rem;overflow:hidden;position:relative;height:200px;box-shadow:var(--scard)}
+.scene-panel canvas{width:100%;height:100%;display:block}
+.scene-label{position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(to top,rgba(8,15,30,.92),transparent);display:flex;align-items:center;justify-content:space-between}
+.scene-title{font-family:var(--fdisplay);font-size:17px;font-weight:600;color:var(--white)}
+.scene-phase-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px}
+
+/* ══ PHASE STRIP ══ */
+.pstrip{display:flex;background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.25rem}
+.psi{flex:1;padding:10px 8px;text-align:center;cursor:pointer;transition:background .22s;border-right:1px solid var(--border);position:relative}
+.psi:last-child{border-right:none}
+.psi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .22s}
+.psi-dot{width:7px;height:7px;border-radius:50%;margin:0 auto 5px;background:var(--muted);opacity:.35;transition:all .22s}
+.psi-name{font-size:11px;font-weight:500;color:var(--muted);transition:color .22s}
+.psi-count{font-size:10px;color:var(--muted);opacity:.5;margin-top:2px}
+
+/* ══ PROGRESS ══ */
+.progwrap{margin-bottom:1.25rem}
+.proglbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.progbar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.progfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--saffron));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 9px var(--goldglow)}
+
+/* ══ LEGEND ══ */
+.legrow{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:1.25rem}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.legdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ══ PIPELINE ══ */
+.pipeline{display:flex;flex-direction:column}
+.pstep{display:flex;gap:14px;cursor:pointer;border-radius:12px;padding:4px;transition:background .15s}
+.pstep:hover{background:rgba(255,255,255,.03)}
+.pleft{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0}
+.picon{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--navy3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;z-index:1;font-size:12px;font-weight:500;color:var(--muted)}
+.pstep.sa .picon{border-color:var(--gold);background:var(--golddim);color:var(--gold2);box-shadow:0 0 18px var(--goldglow)}
+.pstep.sd .picon{border-color:var(--green);background:var(--greenlt);color:#66bb6a}
+.pconn{width:1.5px;flex:1;background:var(--border);min-height:10px;margin:2px 0;transition:background .4s}
+.pstep:last-child .pconn{display:none}
+.pstep.sd .pconn{background:var(--green)}
+.pstep.sa .pconn{background:linear-gradient(to bottom,var(--gold),var(--border))}
+.pbody{flex:1;padding-bottom:.85rem;min-width:0}
+.pheader{display:flex;align-items:flex-start;gap:8px;min-height:36px;padding-top:5px}
+.ptitle{font-size:13px;font-weight:500;flex:1;line-height:1.35;color:var(--white2);transition:color .2s}
+.pstep.sa .ptitle{color:var(--gold2)}
+.pstep.sd .ptitle{color:var(--muted)}
+.psub{font-size:11px;color:var(--muted);margin-top:2px}
+.ptag{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:5px}
+.pexpand{overflow:hidden;max-height:0;opacity:0;transition:max-height .38s ease,opacity .28s ease}
+.pexpand.open{max-height:700px;opacity:1}
+.pcard{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:8px 0 6px;position:relative;overflow:hidden}
+.pstep.sa .pcard{border-color:var(--border2)}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--golddim),transparent)}
+.pdesc{font-size:12.5px;color:var(--muted);line-height:1.72;margin-bottom:12px}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.pkv{background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;border:1px solid var(--border)}
+.pkv-lbl{font-size:10px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}
+.pkv-val{font-size:12px;font-weight:500;color:var(--white2)}
+.pchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.pchip{font-size:10px;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+.askbtn{font-size:11px;padding:6px 14px;cursor:pointer;font-family:var(--fbody);border-radius:20px;background:var(--golddim);color:var(--gold2);border:1px solid var(--border2);transition:all .18s;font-weight:500}
+.askbtn:hover{background:rgba(232,160,32,.26);box-shadow:0 0 14px var(--goldglow)}
+
+/* ══ NAV ══ */
+.navrow{display:flex;gap:10px;margin-top:1.5rem;align-items:center}
+.navbtn{padding:8px 22px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--fbody);transition:all .22s}
+.navprev{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.navprev:hover:not(:disabled){border-color:var(--border2);color:var(--white2)}
+.navprev:disabled{opacity:.3;cursor:not-allowed}
+.navnext{background:linear-gradient(135deg,var(--gold),var(--saffron));border:none;color:var(--navy);font-weight:600;box-shadow:0 2px 14px rgba(232,160,32,.32)}
+.navnext:hover{box-shadow:0 4px 22px rgba(232,160,32,.52);transform:translateY(-1px)}
+.navinfo{font-size:11px;color:var(--muted);flex:1;text-align:center}
+
+/* ══ TIMELINE ══ */
+.seclbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.seclbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.tlwrap{position:relative;padding-left:2rem}
+.tlwrap::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--gold),var(--border),var(--border))}
+.tlitem{position:relative;margin-bottom:.75rem;cursor:pointer}
+.tldot{position:absolute;left:-24px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--navy3);border:2px solid var(--border);transition:all .22s}
+.tlitem:hover .tldot,.tlitem.open .tldot{border-color:var(--gold);background:var(--gold);box-shadow:0 0 9px var(--goldglow)}
+.tlcard{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;transition:border-color .22s,box-shadow .22s}
+.tlitem:hover .tlcard{border-color:rgba(232,160,32,.22)}
+.tlitem.open .tlcard{border-color:var(--border2);box-shadow:0 4px 22px rgba(0,0,0,.3),var(--sgold)}
+.tltop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.tltitle{font-size:13.5px;font-weight:500;color:var(--white2)}
+.tlitem.open .tltitle{color:var(--gold2)}
+.tlsub{font-size:11px;color:var(--muted);margin-top:2px}
+.tltag{font-size:10px;font-weight:500;padding:2px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.tldetail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--golddim)}
+.tlitem.open .tldetail{display:block}
+.tltext{font-size:12.5px;color:var(--muted);line-height:1.72;margin-bottom:10px}
+.tlfacts{display:flex;flex-wrap:wrap;gap:5px}
+.tlfact{font-size:10px;padding:3px 9px;border-radius:20px;background:var(--golddim);color:var(--gold2);border:1px solid var(--border2)}
+
+/* ══ QUIZ ══ */
+.qhdr{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;gap:2rem;align-items:center;position:relative;overflow:hidden}
+.qhdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--golddim),transparent)}
+.qscore-big{font-family:var(--fdisplay);font-size:42px;font-weight:700;color:var(--gold2);line-height:1}
+.qscore-lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.qprog-lbl{font-size:14px;font-weight:500;color:var(--white2)}
+.qprog-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.qcard{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:2rem;box-shadow:var(--scard);animation:fadeUp .3s ease}
+.qq{font-family:var(--fdisplay);font-size:19px;font-weight:600;color:var(--white);margin-bottom:1.5rem;line-height:1.38;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:9px}
+.qopt{padding:12px 18px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.03);text-align:left;font-size:13px;cursor:pointer;font-family:var(--fbody);color:var(--white2);transition:all .16s;position:relative;overflow:hidden}
+.qopt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold),var(--saffron));opacity:0;transition:opacity .16s}
+.qopt:hover:not(:disabled)::before{opacity:.07}
+.qopt:hover:not(:disabled){border-color:var(--border2);color:var(--gold2)}
+.qopt.correct{border-color:var(--green);background:var(--greenlt);color:#81c784;font-weight:500}
+.qopt.wrong{border-color:var(--red);background:var(--redlt);color:#ef9a9a}
+.qfb{margin-top:14px;font-size:13px;padding:12px 16px;border-radius:10px;display:none;line-height:1.65}
+.qfb.show{display:block;animation:fadeUp .25s ease}
+.qfb.pass{background:var(--greenlt);color:#81c784;border:1px solid rgba(19,136,8,.3)}
+.qfb.fail{background:var(--redlt);color:#ef9a9a;border:1px solid rgba(229,57,53,.3)}
+.qdone{text-align:center;background:var(--navy3);border:1px solid var(--border2);border-radius:var(--r);padding:4rem 2rem;box-shadow:var(--sgold)}
+.qdone-score{font-family:var(--fdisplay);font-size:68px;font-weight:700;color:var(--gold2);margin-bottom:.5rem;text-shadow:0 0 36px var(--goldglow)}
+.qdone-lbl{font-size:14px;color:var(--muted);margin-bottom:2rem;line-height:1.65}
+.qbadge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 16px;border-radius:20px;margin-bottom:1rem;background:rgba(255,255,255,.05);border:1px solid var(--border)}
+.resetbtn{padding:10px 30px;background:linear-gradient(135deg,var(--gold),var(--saffron));color:var(--navy);font-weight:600;border:none;border-radius:20px;font-size:13px;cursor:pointer;font-family:var(--fbody);box-shadow:0 4px 18px rgba(232,160,32,.42);transition:all .22s}
+.resetbtn:hover{box-shadow:0 6px 26px rgba(232,160,32,.55);transform:translateY(-1px)}
+
+/* ══ CHAT ══ */
+.chatouter{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--scard)}
+.chattopbar{background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:9px}
+.chatind{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 7px var(--goldglow);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.chattoplbl{font-size:12px;font-weight:500;color:var(--white2)}
+.chattopsub{font-size:11px;color:var(--muted);margin-left:auto}
+.quickqs{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.qqbtn{font-size:11px;padding:5px 13px;border:1px solid var(--border);border-radius:20px;background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;font-family:var(--fbody);font-weight:500;transition:all .16s}
+.qqbtn:hover{border-color:var(--border2);background:var(--golddim);color:var(--gold2)}
+.chatmsgs{min-height:300px;max-height:420px;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:12px}
+.chatmsgs::-webkit-scrollbar{width:3px}
+.chatmsgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{max-width:86%;font-size:13px;line-height:1.65;padding:10px 14px;border-radius:14px}
+.msgbot{align-self:flex-start;background:rgba(255,255,255,.05);color:var(--white2);border:1px solid var(--border);border-radius:14px 14px 14px 3px}
+.msguser{align-self:flex-end;background:linear-gradient(135deg,var(--gold),var(--saffron));color:var(--navy);font-weight:500;border-radius:14px 14px 3px 14px}
+.msgt{align-self:flex-start;color:var(--muted);font-style:italic;font-size:12px;padding:4px 0}
+.chatinrow{display:flex;border-top:1px solid var(--border);background:rgba(255,255,255,.02)}
+.chatinrow input{flex:1;border:none;padding:13px 18px;font-size:13px;font-family:var(--fbody);background:transparent;color:var(--white);outline:none}
+.chatinrow input::placeholder{color:var(--muted)}
+.chatsend{padding:13px 20px;border:none;border-left:1px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--gold);font-family:var(--fbody);transition:background .16s;letter-spacing:.02em}
+.chatsend:hover{background:var(--golddim)}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:640px){
+  .hstats,.pgrid{grid-template-columns:repeat(2,1fr)}
+  .htab{padding:5px 10px;font-size:11px}
+  .hdr{padding:0 1rem}
+  .body{padding:1rem .75rem 3rem}
+  .hero{padding:1.5rem}
+  .hero h1{font-size:26px}
+  .scene-panel{height:150px}
+}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="ambient"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo">
+    <div class="logo-icon">🗳</div>
+    Elect<span>IQ</span>
+  </div>
+  <div class="hbadge">Hack2Skill × Virtual PromptWars</div>
+  <div class="htabs">
+    <button class="htab active" onclick="switchView('pipeline')">How it works</button>
+    <button class="htab" onclick="switchView('timeline')">Timeline</button>
+    <button class="htab" onclick="switchView('quiz')">Quiz</button>
+    <button class="htab" onclick="switchView('chat')">Ask AI</button>
+  </div>
+</header>
+
+<div class="body">
+
+<!-- ═══ VIEW: PIPELINE ═══ -->
+<div class="view active" id="view-pipeline">
+  <div class="hero">
+    <div class="hero-deco">🏛</div>
+    <div class="hero-eye">India's Democratic Process</div>
+    <h1>From announcement<br>to government</h1>
+    <p>12 meticulously structured stages that transform a constitutional notification into a functioning democratic government. Each step is brought to life with animation.</p>
+    <div class="hstats">
+      <div class="hs"><div class="hs-val">12</div><div class="hs-lbl">Total stages</div></div>
+      <div class="hs"><div class="hs-val">~60</div><div class="hs-lbl">Days typically</div></div>
+      <div class="hs"><div class="hs-val">66.4%</div><div class="hs-lbl">2024 turnout</div></div>
+      <div class="hs"><div class="hs-val">543</div><div class="hs-lbl">Lok Sabha seats</div></div>
+    </div>
+  </div>
+
+  <!-- ANIMATED SCENE PANEL -->
+  <div class="scene-panel" id="scene-panel">
+    <canvas id="sceneCanvas"></canvas>
+    <div class="scene-label">
+      <div class="scene-title" id="scene-title">Election Commission announces schedule</div>
+      <span class="scene-phase-tag" id="scene-tag" style="background:rgba(232,160,32,.15);color:#f5b942">Pre-election</span>
+    </div>
+  </div>
+
+  <div class="pstrip" id="pstrip"></div>
+  <div class="progwrap">
+    <div class="proglbl"><span id="prog-phase-lbl">Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progbar"><div class="progfill" id="progfill" style="width:0%"></div></div>
+  </div>
+  <div class="legrow">
+    <div class="leg"><div class="legdot" style="background:var(--gold)"></div>Current step</div>
+    <div class="leg"><div class="legdot" style="background:var(--green)"></div>Completed</div>
+    <div class="leg"><div class="legdot" style="background:var(--muted);opacity:.4"></div>Upcoming</div>
+  </div>
+  <div class="pipeline" id="pipeline"></div>
+  <div class="navrow">
+    <button class="navbtn navprev" id="btn-prev" onclick="navigate(-1)">← Previous</button>
+    <span class="navinfo" id="nav-info">Step 1 of 12</span>
+    <button class="navbtn navnext" id="btn-next" onclick="navigate(1)">Next →</button>
+  </div>
+</div>
+
+<!-- ═══ VIEW: TIMELINE ═══ -->
+<div class="view" id="view-timeline">
+  <p class="seclbl">Key election stages — click to expand</p>
+  <div class="tlwrap" id="tlwrap"></div>
+</div>
+
+<!-- ═══ VIEW: QUIZ ═══ -->
+<div class="view" id="view-quiz">
+  <div class="qhdr">
+    <div>
+      <div class="qscore-big" id="q-score">0/0</div>
+      <div class="qscore-lbl">Your score</div>
+    </div>
+    <div style="flex:1">
+      <div class="qprog-lbl" id="q-progress">Question 1 of 7</div>
+      <div class="qprog-sub">Randomized every attempt</div>
+    </div>
+    <button class="resetbtn" onclick="resetQuiz()" style="background:transparent;color:var(--muted);border:1px solid var(--border);box-shadow:none">Reset</button>
+  </div>
+  <div id="quiz-area"></div>
+</div>
+
+<!-- ═══ VIEW: CHAT ═══ -->
+<div class="view" id="view-chat">
+  <p class="seclbl">AI-Powered Election Guide</p>
+  <div class="chatouter">
+    <div class="chattopbar">
+      <div class="chatind"></div>
+      <div class="chattoplbl">ElectIQ Assistant</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+        <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(232,160,32,.14);color:#f5b942;border:1px solid rgba(232,160,32,.28);font-family:var(--fbody);font-weight:500;">claude-sonnet-4</span>
+        <span class="chattopsub" id="chat-turn-count">Multi-turn memory ✓</span>
+        <button onclick="clearChat()" style="font-size:10px;padding:3px 9px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;font-family:var(--fbody);" onmouseover="this.style.color='#ef9a9a'" onmouseout="this.style.color='var(--muted)'">Clear ✕</button>
+      </div>
+    </div>
+    <div class="quickqs">
+      <button class="qqbtn" onclick="askQ('What is an EVM and how does it work?')">What is EVM?</button>
+      <button class="qqbtn" onclick="askQ('Who is eligible to vote in India?')">Who can vote?</button>
+      <button class="qqbtn" onclick="askQ('What is NOTA in Indian elections?')">What is NOTA?</button>
+      <button class="qqbtn" onclick="askQ('Explain India Model Code of Conduct')">Model Code</button>
+      <button class="qqbtn" onclick="askQ('How is the President of India elected?')">President election</button>
+      <button class="qqbtn" onclick="askQ('What is VVPAT and why was it introduced?')">What is VVPAT?</button>
+    </div>
+    <div class="chatmsgs" id="chat-msgs">
+      <div class="msg msgbot">Namaste! I'm ElectIQ — your AI guide to India's democratic process. Ask me anything about elections, voting systems, constitutional provisions, or political history.</div>
+    </div>
+    <div class="chatinrow">
+      <input type="text" id="chat-in" placeholder="Ask anything about elections…" onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chatsend" onclick="sendChat()">SEND ↗</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   PARTICLE BACKGROUND (Canvas)
+════════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('bgCanvas');
+  const ctx=c.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  resize();window.addEventListener('resize',resize);
+
+  // Ballot paper particle
+  class P{
+    constructor(){this.reset()}
+    reset(){
+      this.x=Math.random()*W;
+      this.y=Math.random()*H+H;
+      this.size=Math.random()*10+5;
+      this.vx=(Math.random()-.5)*.4;
+      this.vy=-(Math.random()*.6+.2);
+      this.rot=Math.random()*Math.PI*2;
+      this.vrot=(Math.random()-.5)*.025;
+      this.type=Math.floor(Math.random()*4); // 0=ballot,1=tick,2=star,3=circle
+      this.alpha=Math.random()*.18+.04;
+      this.color=Math.random()<.5?'#e8a020':'#4fc3f7';
+    }
+    draw(){
+      ctx.save();ctx.globalAlpha=this.alpha;
+      ctx.translate(this.x,this.y);ctx.rotate(this.rot);
+      ctx.strokeStyle=this.color;ctx.lineWidth=1;
+      if(this.type===0){
+        ctx.strokeRect(-this.size*.5,-this.size*.35,this.size,this.size*.7);
+        ctx.beginPath();ctx.moveTo(-this.size*.3,-this.size*.15);ctx.lineTo(-this.size*.05,this.size*.15);ctx.lineTo(this.size*.35,-this.size*.25);ctx.stroke();
+      }else if(this.type===1){
+        ctx.beginPath();ctx.moveTo(-this.size*.3,0);ctx.lineTo(0,this.size*.35);ctx.lineTo(this.size*.4,-this.size*.3);ctx.stroke();
+      }else if(this.type===2){
+        for(let i=0;i<5;i++){
+          const a=i*Math.PI*.4-Math.PI*.5,b=a+Math.PI*.2;
+          const r1=this.size*.4,r2=this.size*.18;
+          if(i===0)ctx.beginPath(),ctx.moveTo(Math.cos(a)*r1,Math.sin(a)*r1);
+          else ctx.lineTo(Math.cos(a)*r1,Math.sin(a)*r1);
+          ctx.lineTo(Math.cos(b)*r2,Math.sin(b)*r2);
+        }ctx.closePath();ctx.stroke();
+      }else{
+        ctx.beginPath();ctx.arc(0,0,this.size*.3,0,Math.PI*2);ctx.stroke();
+      }
+      ctx.restore();
+    }
+    update(){
+      this.x+=this.vx;this.y+=this.vy;this.rot+=this.vrot;
+      if(this.y<-20)this.reset();
+    }
+  }
+
+  for(let i=0;i<55;i++)particles.push(new P());
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{p.update();p.draw()});
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ════════════════════════════════════════
+   SCENE ANIMATION (per election step)
+════════════════════════════════════════ */
+let sceneAnim=null;
+
+const SCENE_RENDERERS=[
+  // 0: Announcement — globe with pulse rings + document
+  function(ctx,W,H,t){
+    ctx.clearRect(0,0,W,H);
+    // BG gradient
+    const g=ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#0f1a2e');g.addColorStop(1,'#1e2b45');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Pulse rings
+    for(let i=0;i<3;i++){
+      const phase=(t*.001+i*.33)%1;
+      const r=30+phase*120;
+      ctx.beginPath();ctx.arc(W*.3,H*.5,r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(232,160,32,${.5*(1-phase)})`;ctx.lineWidth=1.5;ctx.stroke();
+    }
+    // Central document icon
+    const cx=W*.3,cy=H*.5;
+    ctx.save();ctx.translate(cx,cy);
+    ctx.fillStyle='rgba(232,160,32,.18)';
+    roundRect(ctx,-18,-22,36,44,4);ctx.fill();
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=1.5;
+    roundRect(ctx,-18,-22,36,44,4);ctx.stroke();
+    for(let i=0;i<4;i++){
+      ctx.fillStyle='rgba(232,160,32,.6)';
+      ctx.fillRect(-10,-12+i*9,20,2);
+    }
+    ctx.restore();
+    // India map outline (simplified blob)
+    drawIndiaBlob(ctx,W*.65,H*.5,55,t);
+    // Caption
+    ctx.fillStyle='rgba(240,238,232,.7)';ctx.font='bold 13px Outfit,sans-serif';
+    ctx.textAlign='left';ctx.fillText('Official Gazette Notification',W*.05,H*.9);
+  },
+
+  // 1: MCC — shield with lock
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    const cx=W*.3,cy=H*.5;
+    // Shield
+    ctx.save();ctx.translate(cx,cy);
+    const sh=(Math.sin(t*.002)*.03+1);ctx.scale(sh,sh);
+    ctx.beginPath();ctx.moveTo(0,-28);ctx.lineTo(22,-14);ctx.lineTo(22,8);ctx.quadraticCurveTo(0,30,-22,8);ctx.lineTo(-22,-14);ctx.closePath();
+    ctx.fillStyle='rgba(79,195,247,.12)';ctx.fill();
+    ctx.strokeStyle='#4fc3f7';ctx.lineWidth=1.8;ctx.stroke();
+    // Lock
+    ctx.strokeStyle='rgba(232,160,32,.8)';ctx.lineWidth=1.5;
+    ctx.strokeRect(-8,-4,16,14);ctx.beginPath();
+    ctx.arc(0,-4,7,Math.PI,0);ctx.stroke();
+    ctx.restore();
+    // Floating rule chips
+    const rules=['No new schemes','No govt vehicles','No hate speech'];
+    rules.forEach((r,i)=>{
+      const x=W*.48+Math.sin(t*.001+i)*8;
+      const y=H*.28+i*50;
+      ctx.save();ctx.globalAlpha=.75+Math.sin(t*.002+i)*.15;
+      ctx.fillStyle='rgba(79,195,247,.12)';
+      roundRect(ctx,x,y-12,150,24,6);ctx.fill();
+      ctx.strokeStyle='rgba(79,195,247,.4)';ctx.lineWidth=.8;
+      roundRect(ctx,x,y-12,150,24,6);ctx.stroke();
+      ctx.fillStyle='#80d8ff';ctx.font='11px Outfit,sans-serif';ctx.textAlign='left';
+      ctx.fillText('✦  '+r,x+10,y+4);
+      ctx.restore();
+    });
+  },
+
+  // 2: Nominations — people walking to desk
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Desk
+    const dx=W*.6,dy=H*.6;
+    ctx.fillStyle='rgba(232,160,32,.2)';
+    ctx.fillRect(dx-40,dy,80,8);ctx.fillRect(dx-35,dy+8,5,20);ctx.fillRect(dx+30,dy+8,5,20);
+    // Returning officer
+    drawStickFigure(ctx,dx,dy-30,18,'#e8a020',0);
+    // Walking candidates
+    for(let i=0;i<3;i++){
+      const phase=((t*.0008+i*.33)%1);
+      const x=W*.05+phase*(dx-W*.12);
+      const bob=Math.sin(t*.006+i)*3;
+      drawStickFigure(ctx,x,dy-30+bob,14,'#4fc3f7',t*.006+i);
+    }
+    // Document being handed
+    ctx.fillStyle='rgba(232,160,32,.7)';ctx.fillRect(dx-12,dy-20,18,14);
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=1;ctx.strokeRect(dx-12,dy-20,18,14);
+    ctx.fillStyle='rgba(232,160,32,.5)';ctx.font='9px Outfit';ctx.textAlign='center';ctx.fillText('₹25,000',dx+4,dy-26);
+  },
+
+  // 3: Scrutiny — magnifying glass over document
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    const cx=W*.35,cy=H*.5;
+    // Document stack
+    for(let i=2;i>=0;i--){
+      ctx.fillStyle=`rgba(255,255,255,${.04+i*.02})`;
+      roundRect(ctx,cx-25+i*4,cy-32+i*4,50,64,4);ctx.fill();
+      ctx.strokeStyle=`rgba(232,160,32,${.2+i*.1})`;ctx.lineWidth=1;
+      roundRect(ctx,cx-25+i*4,cy-32+i*4,50,64,4);ctx.stroke();
+    }
+    // Lines on doc
+    for(let i=0;i<5;i++){ctx.fillStyle='rgba(240,238,232,.15)';ctx.fillRect(cx-16,cy-20+i*11,32,3)}
+    // Magnifier swinging
+    const angle=Math.sin(t*.0012)*.4;
+    ctx.save();ctx.translate(W*.6,H*.38);ctx.rotate(angle);
+    ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='rgba(232,160,32,.07)';ctx.fill();
+    // handle
+    ctx.beginPath();ctx.moveTo(15,15);ctx.lineTo(32,32);ctx.strokeStyle='#e8a020';ctx.lineWidth=3;ctx.lineCap='round';ctx.stroke();
+    ctx.restore();
+    // tick/cross
+    const tick=(t%3000)<2000;
+    ctx.save();ctx.globalAlpha=.9;
+    ctx.fillStyle=tick?'#66bb6a':'#ef9a9a';
+    ctx.font='bold 20px Arial';ctx.textAlign='center';
+    ctx.fillText(tick?'✓':'✗',cx+2,cy+6);
+    ctx.restore();
+  },
+
+  // 4: Withdrawal — door with arrow
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    const cx=W*.35,cy=H*.5;
+    // Door frame
+    ctx.strokeStyle='rgba(232,160,32,.5)';ctx.lineWidth=2;
+    ctx.strokeRect(cx-20,cy-40,40,70);
+    // Door opening animation
+    const open=Math.sin(t*.001)*.4+.4;
+    ctx.save();ctx.translate(cx-20,cy+30);
+    ctx.transform(Math.cos(open),0,0,1,0,0);
+    ctx.fillStyle='rgba(255,140,0,.15)';ctx.fillRect(0,-70,40,70);
+    ctx.strokeStyle='#ff8c00';ctx.lineWidth=1.5;ctx.strokeRect(0,-70,40,70);
+    ctx.restore();
+    // Arrow pointing out
+    const ax=W*.65,ay=H*.5;
+    const arrowAnim=Math.sin(t*.0015)*8;
+    ctx.strokeStyle='rgba(232,160,32,.7)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(ax-20+arrowAnim,ay);ctx.lineTo(ax+20+arrowAnim,ay);
+    ctx.lineTo(ax+8+arrowAnim,ay-12);ctx.moveTo(ax+20+arrowAnim,ay);ctx.lineTo(ax+8+arrowAnim,ay+12);ctx.stroke();
+    ctx.fillStyle='rgba(240,238,232,.5)';ctx.font='11px Outfit';ctx.textAlign='center';
+    ctx.fillText('2-day window',ax+arrowAnim,ay-22);
+  },
+
+  // 5: Campaign — megaphone + crowd
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Crowd of dots
+    for(let i=0;i<30;i++){
+      const x=W*.15+Math.sin(i*1.37)*W*.38;
+      const y=H*.7+Math.cos(i*1.1)*H*.15;
+      const bob=Math.sin(t*.002+i*.5)*4;
+      ctx.beginPath();ctx.arc(x,y+bob,3+Math.random()*2,0,Math.PI*2);
+      ctx.fillStyle=`hsl(${200+i*5},60%,60%)`;ctx.globalAlpha=.55+Math.sin(t*.003+i)*.2;ctx.fill();
+      ctx.globalAlpha=1;
+    }
+    // Megaphone
+    const mx=W*.7,my=H*.42;
+    ctx.save();ctx.translate(mx,my);
+    const wobble=Math.sin(t*.003)*.08;ctx.rotate(wobble);
+    ctx.beginPath();ctx.moveTo(-8,-6);ctx.lineTo(18,-18);ctx.lineTo(18,18);ctx.lineTo(-8,6);ctx.closePath();
+    ctx.fillStyle='rgba(255,140,0,.25)';ctx.fill();ctx.strokeStyle='#ff8c00';ctx.lineWidth=1.8;ctx.stroke();
+    ctx.fillRect(-16,-5,8,10);ctx.strokeRect(-16,-5,8,10);
+    ctx.restore();
+    // Sound waves
+    for(let i=0;i<3;i++){
+      const r=25+i*18+((t*.05)%18);
+      ctx.beginPath();ctx.arc(mx+22,my,r,-.6,.6);
+      ctx.strokeStyle=`rgba(255,140,0,${.5-i*.14})`;ctx.lineWidth=1.4;ctx.stroke();
+    }
+  },
+
+  // 6: Silent period — crossed megaphone + clock
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Big clock
+    const clx=W*.35,cly=H*.5,cr=45;
+    ctx.beginPath();ctx.arc(clx,cly,cr,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.04)';ctx.fill();
+    ctx.strokeStyle='rgba(232,160,32,.6)';ctx.lineWidth=1.8;ctx.stroke();
+    // Clock hands (at 48hr mark — shown as specific angle)
+    const handAngle=-Math.PI*.5+(t*.001%( Math.PI*2));
+    ctx.save();ctx.translate(clx,cly);
+    ctx.rotate(handAngle);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-cr*.65);
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=2;ctx.lineCap='round';ctx.stroke();
+    ctx.rotate(-handAngle);ctx.rotate(handAngle*12);
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-cr*.4);
+    ctx.strokeStyle='#f5b942';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle='rgba(232,160,32,.7)';ctx.font='bold 11px Outfit';ctx.textAlign='center';
+    ctx.fillText('48 HOURS',clx,cly+cr+16);
+    // Crossed megaphone
+    const rx=W*.68;const ry=H*.5;
+    ctx.save();ctx.translate(rx,ry);ctx.globalAlpha=.6;
+    ctx.strokeStyle='#ef9a9a';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(-8,-6);ctx.lineTo(18,-18);ctx.lineTo(18,18);ctx.lineTo(-8,6);ctx.closePath();ctx.stroke();
+    ctx.strokeStyle='#e53935';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(-22,-22);ctx.lineTo(22,22);ctx.moveTo(22,-22);ctx.lineTo(-22,22);ctx.stroke();
+    ctx.restore();
+  },
+
+  // 7: Polling day — EVM + hand pressing button
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    const ex=W*.35,ey=H*.42;
+    // EVM machine
+    ctx.fillStyle='rgba(255,255,255,.06)';roundRect(ctx,ex-40,ey-30,80,70,6);ctx.fill();
+    ctx.strokeStyle='rgba(79,195,247,.5)';ctx.lineWidth=1.5;roundRect(ctx,ex-40,ey-30,80,70,6);ctx.stroke();
+    // Buttons
+    const parties=['🟠','🔵','🟢','⚪'];
+    parties.forEach((p,i)=>{
+      const bx=ex-25+i*17,by=ey-10;
+      const isPressed=Math.floor(t*.001)%4===i;
+      ctx.fillStyle=isPressed?'rgba(232,160,32,.5)':'rgba(255,255,255,.1)';
+      ctx.beginPath();ctx.arc(bx,by,6,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=isPressed?'#e8a020':'rgba(255,255,255,.2)';ctx.lineWidth=1;ctx.stroke();
+      ctx.font='9px serif';ctx.textAlign='center';ctx.fillText(p,bx,by+3);
+    });
+    // VVPAT slip
+    const slipVisible=(t%2500)<1200;
+    if(slipVisible){
+      const sy=ey+25+((t%2500)/1200)*20;
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(ex-15,sy-6,30,20);
+      ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=.5;ctx.strokeRect(ex-15,sy-6,30,20);
+      ctx.fillStyle='#0f1a2e';ctx.font='7px Outfit';ctx.textAlign='center';
+      ctx.fillText('VVPAT',ex,sy+5);ctx.fillText('✓',ex,sy+14);
+    }
+    // Hand
+    const hy=ey-50+Math.sin(t*.0015)*8;
+    drawHand(ctx,W*.62,hy,'#f5b942');
+    // Ink bottle
+    ctx.fillStyle='rgba(30,60,30,.7)';ctx.fillRect(W*.75,H*.6,18,28);
+    ctx.fillStyle='rgba(19,136,8,.5)';ctx.fillRect(W*.75,H*.6,18,10);
+    ctx.strokeStyle='rgba(19,136,8,.7)';ctx.lineWidth=1;ctx.strokeRect(W*.75,H*.6,18,28);
+    ctx.fillStyle='rgba(240,238,232,.5)';ctx.font='8px Outfit';ctx.textAlign='center';ctx.fillText('INK',W*.759,H*.72);
+  },
+
+  // 8: Strong room — vault door with lock
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    const vx=W*.38,vy=H*.5;
+    // Vault door
+    ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(vx,vy,52,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(79,195,247,.4)';ctx.lineWidth=2;ctx.stroke();
+    // Vault spokes
+    for(let i=0;i<8;i++){
+      const a=i*Math.PI/4+(t*.0002);
+      ctx.beginPath();ctx.moveTo(vx,vy);ctx.lineTo(vx+Math.cos(a)*52,vy+Math.sin(a)*52);
+      ctx.strokeStyle='rgba(79,195,247,.25)';ctx.lineWidth=1.5;ctx.stroke();
+    }
+    // Handle
+    ctx.beginPath();ctx.arc(vx+18,vy,12,0,Math.PI*2);
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(vx+18,vy,5,0,Math.PI*2);ctx.fillStyle='#e8a020';ctx.fill();
+    // CCTV camera icon top right
+    const cx2=W*.72,cy2=H*.32;
+    ctx.save();ctx.translate(cx2,cy2);
+    ctx.fillStyle='rgba(232,160,32,.2)';ctx.fillRect(-14,-8,28,16);
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=1;ctx.strokeRect(-14,-8,28,16);
+    ctx.beginPath();ctx.moveTo(14,-6);ctx.lineTo(24,-12);ctx.lineTo(24,6);ctx.lineTo(14,6);ctx.strokeStyle='#e8a020';ctx.stroke();
+    // Recording dot
+    const blink=Math.sin(t*.005)>.2;
+    if(blink){ctx.beginPath();ctx.arc(-8,0,3,0,Math.PI*2);ctx.fillStyle='#e53935';ctx.fill();}
+    ctx.restore();
+    // EVM boxes
+    for(let i=0;i<3;i++){
+      ctx.fillStyle='rgba(79,195,247,.12)';roundRect(ctx,vx+60+i*22,vy+20,18,26,3);ctx.fill();
+      ctx.strokeStyle='rgba(79,195,247,.4)';ctx.lineWidth=1;roundRect(ctx,vx+60+i*22,vy+20,18,26,3);ctx.stroke();
+    }
+    ctx.fillStyle='rgba(240,238,232,.4)';ctx.font='9px Outfit';ctx.textAlign='center';
+    ctx.fillText('SEALED',vx+92,vy+58);
+  },
+
+  // 9: Counting — tally marks animating
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Tally marks building up
+    const count=Math.floor((t*.003)%30)+1;
+    const parties=[{c:'#FF8C00',n:'Party A'},{c:'#4fc3f7',n:'Party B'},{c:'#66bb6a',n:'Party C'}];
+    parties.forEach((p,pi)=>{
+      const y=H*.3+pi*H*.22;
+      // Bar
+      const barW=(count/(pi===0?30:pi===1?22:18))*W*.55;
+      const g=ctx.createLinearGradient(W*.12,0,W*.12+barW,0);
+      g.addColorStop(0,p.c+'55');g.addColorStop(1,p.c+'22');
+      ctx.fillStyle=g;ctx.fillRect(W*.12,y-8,Math.min(barW,W*.55),16);
+      ctx.strokeStyle=p.c;ctx.lineWidth=1;ctx.strokeRect(W*.12,y-8,Math.min(barW,W*.55),16);
+      ctx.fillStyle=p.c;ctx.font='bold 11px Outfit';ctx.textAlign='left';ctx.fillText(p.n,W*.12,y-12);
+      const seats=Math.floor(Math.min(count,pi===0?30:pi===1?22:18)*18.1);
+      ctx.textAlign='right';ctx.fillText(seats+' seats',W*.67,y+4);
+    });
+    // Majority line
+    ctx.beginPath();ctx.moveTo(W*.12+W*.55*(272/543),H*.22);ctx.lineTo(W*.12+W*.55*(272/543),H*.78);
+    ctx.strokeStyle='rgba(232,160,32,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(232,160,32,.7)';ctx.font='10px Outfit';ctx.textAlign='center';
+    ctx.fillText('272 — Majority',W*.12+W*.55*(272/543),H*.2);
+  },
+
+  // 10: Results — fireworks / confetti celebration
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Trophy
+    const tx=W*.35,ty=H*.45;
+    ctx.save();ctx.translate(tx,ty);
+    const wobble=Math.sin(t*.002)*.08;ctx.rotate(wobble);
+    // Cup
+    ctx.beginPath();ctx.moveTo(-20,-30);ctx.quadraticCurveTo(-22,10,0,15);ctx.quadraticCurveTo(22,10,20,-30);ctx.closePath();
+    ctx.fillStyle='rgba(232,160,32,.3)';ctx.fill();ctx.strokeStyle='#e8a020';ctx.lineWidth=2;ctx.stroke();
+    // Handles
+    ctx.beginPath();ctx.moveTo(-20,-15);ctx.quadraticCurveTo(-32,-15,-28,0);ctx.quadraticCurveTo(-24,8,-20,5);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(20,-15);ctx.quadraticCurveTo(32,-15,28,0);ctx.quadraticCurveTo(24,8,20,5);ctx.stroke();
+    // Star
+    ctx.fillStyle='#f5b942';ctx.font='16px serif';ctx.textAlign='center';ctx.fillText('★',0,-10);
+    ctx.restore();
+    // Confetti bursts
+    for(let i=0;i<20;i++){
+      const angle=i*Math.PI*.1+t*.002;
+      const radius=60+Math.sin(t*.003+i)*20;
+      const px=W*.65+Math.cos(angle)*radius;
+      const py=H*.4+Math.sin(angle)*radius*.5;
+      const cols=['#e8a020','#4fc3f7','#66bb6a','#ff8c00','#ce93d8'];
+      ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);
+      ctx.fillStyle=cols[i%cols.length];ctx.globalAlpha=.6+Math.sin(t*.004+i)*.3;ctx.fill();ctx.globalAlpha=1;
+    }
+    // Certificate
+    ctx.fillStyle='rgba(255,255,255,.06)';roundRect(ctx,W*.55,H*.62,W*.34,H*.25,6);ctx.fill();
+    ctx.strokeStyle='rgba(232,160,32,.4)';ctx.lineWidth=1;roundRect(ctx,W*.55,H*.62,W*.34,H*.25,6);ctx.stroke();
+    ctx.fillStyle='rgba(240,238,232,.7)';ctx.font='bold 11px Outfit';ctx.textAlign='center';
+    ctx.fillText('MEMBER ELECTED',W*.72,H*.72);ctx.fillStyle='rgba(240,238,232,.4)';ctx.font='9px Outfit';
+    ctx.fillText('Form 20 Certificate',W*.72,H*.82);
+  },
+
+  // 11: Oath — Rashtrapati Bhavan columns + figure raising hand
+  function(ctx,W,H,t){
+    drawDarkBG(ctx,W,H);
+    // Columns (building silhouette)
+    const cols=6;
+    for(let i=0;i<cols;i++){
+      const x=W*.15+i*(W*.7/(cols-1));
+      ctx.fillStyle='rgba(232,160,32,.15)';ctx.fillRect(x-5,H*.22,10,H*.52);
+      ctx.strokeStyle='rgba(232,160,32,.3)';ctx.lineWidth=1;ctx.strokeRect(x-5,H*.22,10,H*.52);
+    }
+    // Dome
+    ctx.beginPath();ctx.ellipse(W*.5,H*.22,W*.28,H*.16,0,Math.PI,0);
+    ctx.fillStyle='rgba(232,160,32,.08)';ctx.fill();
+    ctx.strokeStyle='rgba(232,160,32,.35)';ctx.lineWidth=1.5;ctx.stroke();
+    // Star atop dome
+    ctx.fillStyle='rgba(232,160,32,.6)';ctx.font='14px serif';ctx.textAlign='center';
+    ctx.fillText('★',W*.5,H*.12);
+    // Figure raising hand (oath)
+    const fx=W*.5,fy=H*.62;
+    drawStickFigure(ctx,fx,fy,22,'#f5b942',0);
+    // Raised hand animation
+    const raise=Math.sin(t*.0008)*15-25;
+    ctx.save();ctx.translate(fx,fy-22);
+    ctx.strokeStyle='#f5b942';ctx.lineWidth=2;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-20,raise);ctx.stroke();
+    ctx.beginPath();ctx.arc(-20,raise,4,0,Math.PI*2);ctx.fillStyle='rgba(232,160,32,.5)';ctx.fill();ctx.strokeStyle='#e8a020';ctx.stroke();
+    ctx.restore();
+    // Text
+    const alpha=.5+Math.sin(t*.002)*.3;
+    ctx.fillStyle=`rgba(232,160,32,${alpha})`;ctx.font='bold 12px Cormorant Garamond,serif';ctx.textAlign='center';
+    ctx.fillText('"I do solemnly affirm…"',W*.5,H*.88);
+  }
+];
+
+function drawDarkBG(ctx,W,H){
+  ctx.clearRect(0,0,W,H);
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#0f1a2e');g.addColorStop(1,'#1e2b45');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+function drawIndiaBlob(ctx,x,y,r,t){
+  const pts=12;ctx.beginPath();
+  for(let i=0;i<=pts;i++){
+    const a=i/pts*Math.PI*2;
+    const nr=r*(1+Math.sin(a*3+t*.0005)*.12+Math.cos(a*5+t*.0003)*.07);
+    if(i===0)ctx.moveTo(x+Math.cos(a)*nr,y+Math.sin(a)*nr);
+    else ctx.lineTo(x+Math.cos(a)*nr,y+Math.sin(a)*nr);
+  }
+  ctx.closePath();ctx.fillStyle='rgba(232,160,32,.08)';ctx.fill();
+  ctx.strokeStyle='rgba(232,160,32,.35)';ctx.lineWidth=1.2;ctx.stroke();
+  ctx.fillStyle='rgba(232,160,32,.5)';ctx.font='bold 11px Outfit';ctx.textAlign='center';ctx.fillText('INDIA',x,y+4);
+}
+function drawStickFigure(ctx,x,y,size,color,legPhase){
+  ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=1.8;ctx.lineCap='round';
+  // Head
+  ctx.beginPath();ctx.arc(0,-size*.9,size*.22,0,Math.PI*2);ctx.stroke();
+  // Body
+  ctx.beginPath();ctx.moveTo(0,-size*.67);ctx.lineTo(0,0);ctx.stroke();
+  // Arms
+  ctx.beginPath();ctx.moveTo(-size*.35,-size*.35);ctx.lineTo(size*.35,-size*.35);ctx.stroke();
+  // Legs
+  const lp=Math.sin(legPhase)*.3;
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-size*.3+lp*size*.2,size*.5);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(size*.3-lp*size*.2,size*.5);ctx.stroke();
+  ctx.restore();
+}
+function drawHand(ctx,x,y,color){
+  ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineCap='round';
+  // Palm
+  ctx.fillStyle=color+'33';ctx.beginPath();ctx.ellipse(0,0,10,14,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  // Index finger pointing down
+  ctx.beginPath();ctx.moveTo(0,14);ctx.lineTo(0,28);ctx.stroke();
+  ctx.restore();
+}
+
+/* Animated scene engine */
+function startScene(idx){
+  if(sceneAnim)cancelAnimationFrame(sceneAnim);
+  const panel=document.getElementById('scene-panel');
+  const canvas=document.getElementById('sceneCanvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){
+    canvas.width=panel.offsetWidth;
+    canvas.height=panel.offsetHeight;
+  }
+  resize();
+  let t=0;
+  function loop(){
+    resize();
+    SCENE_RENDERERS[idx](ctx,canvas.width,canvas.height,t);
+    t+=16;
+    sceneAnim=requestAnimationFrame(loop);
+  }
+  loop();
+  // Update labels
+  document.getElementById('scene-title').textContent=STEPS[idx].title;
+  const ph=PHASES[phaseOf[idx]];
+  const tag=document.getElementById('scene-tag');
+  tag.textContent=ph.name;
+  tag.style.background=ph.bg;tag.style.color=ph.tc;
+}
+
+/* ════════════════════════════════════════
+   DATA
+════════════════════════════════════════ */
+const PHASES=[
+  {name:"Pre-election",color:"#e8a020",bg:"rgba(232,160,32,.15)",tc:"#f5b942",steps:[0,1]},
+  {name:"Nomination",  color:"#4fc3f7",bg:"rgba(79,195,247,.12)",tc:"#80d8ff",steps:[2,3,4]},
+  {name:"Campaign",    color:"#ff8c00",bg:"rgba(255,140,0,.12)", tc:"#ffb74d",steps:[5,6]},
+  {name:"Polling",     color:"#138808",bg:"rgba(19,136,8,.15)",  tc:"#81c784",steps:[7,8]},
+  {name:"Results",     color:"#ce93d8",bg:"rgba(206,147,216,.12)",tc:"#e1bee7",steps:[9,10,11]},
+];
+const phaseOf=[0,0,1,1,1,2,2,3,3,4,4,4];
+
+const STEPS=[
+  {title:"Election Commission announces schedule",sub:"Official Gazette notification issued",
+   desc:"The ECI — autonomous constitutional body under Article 324 — officially announces election dates. This single notification triggers the entire democratic machinery across 28 states and 8 UTs simultaneously.",
+   kv:[{l:"Body",v:"ECI (Art. 324)"},{l:"Output",v:"Gazette notification"},{l:"Validity",v:"Binding on all"}],
+   chips:["MCC activated instantly","Multi-phase schedule","All parties notified"],
+   ask:"Tell me about India's Election Commission and its constitutional powers"},
+  {title:"Model Code of Conduct activated",sub:"Instant restrictions on ruling party",
+   desc:"The MCC activates the moment election dates are announced. It bars the ruling party from announcing new schemes, using state machinery for campaigns, or making appointments for electoral advantage.",
+   kv:[{l:"Applies to",v:"All parties"},{l:"Lasts till",v:"Results declared"},{l:"Enforced by",v:"ECI directly"}],
+   chips:["No new govt schemes","No official vehicle misuse","No hate speech"],
+   ask:"What are the key rules of India's Model Code of Conduct?"},
+  {title:"Filing of nominations",sub:"Candidates submit papers to Returning Officer",
+   desc:"Any eligible citizen aged 25+ (Lok Sabha) files nomination papers with the Returning Officer. They must declare all assets, criminal antecedents, and liabilities in a sworn affidavit.",
+   kv:[{l:"Age",v:"25+ (LS), 30+ (RS)"},{l:"Deposit",v:"₹25,000"},{l:"SC/ST",v:"₹12,500"}],
+   chips:["Affidavit of assets mandatory","Proposer must be registered voter","Criminal record required"],
+   ask:"What documents does a candidate need to file nominations in Indian elections?"},
+  {title:"Scrutiny of nominations",sub:"Returning Officer verifies all papers",
+   desc:"The Returning Officer meticulously checks every nomination for legal compliance — verifying proposer registration, candidate eligibility, deposit amounts, and affidavit completeness.",
+   kv:[{l:"Done by",v:"Returning Officer"},{l:"Presence",v:"Candidate + agents"},{l:"Outcome",v:"Accept / Reject"}],
+   chips:["Objections can be raised","Reasons documented","Transparent process"],
+   ask:"How does scrutiny of nominations work in Indian elections?"},
+  {title:"Withdrawal of candidature",sub:"2-day irrevocable window to pull out",
+   desc:"After scrutiny, candidates have a fixed 2-day window to voluntarily withdraw. Withdrawal is irrevocable. After the deadline, the ECI finalises the candidate list and allots election symbols.",
+   kv:[{l:"Window",v:"~2 days"},{l:"Reversible?",v:"No — final"},{l:"After deadline",v:"Symbol allotment"}],
+   chips:["Final list publicly published","Reserved symbols for recognised parties","Independents get free symbols"],
+   ask:"How are election symbols allotted to candidates in India?"},
+  {title:"Election campaigning begins",sub:"Rallies, ads, door-to-door canvassing",
+   desc:"Parties launch manifestos, hold rallies, run digital and print campaigns. All expenditure is tracked by ECI observers. Paid news is strictly prohibited.",
+   kv:[{l:"Spend cap",v:"₹95L (LS)"},{l:"Star list",v:"Submit to ECI"},{l:"Media",v:"All platforms"}],
+   chips:["Paid news strictly banned","ECI observers track spending","Social media archived"],
+   ask:"What are the campaign spending limits in Indian Lok Sabha elections?"},
+  {title:"Silent period — 48-hour ban",sub:"All campaigning halts before polling",
+   desc:"A statutory 48-hour 'silent period' begins exactly 2 days before polling. No rallies, no TV ads, no social media campaigns. Designed to give voters uninterrupted reflection time.",
+   kv:[{l:"Starts",v:"48 hrs before"},{l:"Covers",v:"All media"},{l:"Penalty",v:"Criminal offence"}],
+   chips:["Social media posts also illegal","Violation = imprisonment","Enforced by police + ECI"],
+   ask:"What is the 48-hour election silence period in India?"},
+  {title:"Voting day",sub:"EVM + VVPAT voting at booths 7AM–6PM",
+   desc:"Polling stations open 7 AM–6 PM, monitored by paramilitary security. Voters show valid ID, get indelible ink on left index finger, and press the EVM button. A VVPAT slip confirms the vote for 7 seconds.",
+   kv:[{l:"Hours",v:"7 AM – 6 PM"},{l:"ID types",v:"12 valid docs"},{l:"Ink",v:"Left index finger"}],
+   chips:["EVM + VVPAT system","CAPF security deployed","Micro-observers at booths"],
+   ask:"How does the EVM and VVPAT system work on Indian polling day?"},
+  {title:"EVMs sealed in strong rooms",sub:"Under 24/7 CCTV and armed guard",
+   desc:"After polling, EVMs are sealed with tamper-evident stickers in presence of candidates and agents. All machines are transported under armed escort to strong rooms with 24/7 CCTV and paramilitary guard.",
+   kv:[{l:"Seals",v:"Tamper-evident"},{l:"Monitoring",v:"24/7 CCTV"},{l:"Guards",v:"CAPF paramilitary"}],
+   chips:["Agents sign the seals","Multiple locks on strong room","ECI observers retain access"],
+   ask:"What security measures protect EVMs between polling and counting?"},
+  {title:"Counting of votes",sub:"Postal ballots first, then EVM rounds",
+   desc:"On counting day, postal ballots are tallied first. EVM counting proceeds table-by-table in rounds, with candidates' agents at every table. 5 randomly selected booths' VVPAT slips are physically matched per constituency.",
+   kv:[{l:"Postal",v:"Always first"},{l:"VVPAT check",v:"5 booths/seat"},{l:"Rounds",v:"Table by table"}],
+   chips:["Counting agents at every table","Round-by-round declaration","Media outside hall"],
+   ask:"Explain vote counting and VVPAT verification in Indian elections"},
+  {title:"Results declared & certificates issued",sub:"Returning Officer certifies winner",
+   desc:"After all rounds are complete, the Returning Officer officially announces the result and issues a Form 20 'Member Elected' certificate. Unsuccessful candidates can file an Election Petition in the High Court within 45 days.",
+   kv:[{l:"Declared by",v:"Returning Officer"},{l:"Certificate",v:"Form 20"},{l:"Dispute",v:"High Court, 45 days"}],
+   chips:["Results forwarded to ECI","MP oath within 6 months","Margin recorded publicly"],
+   ask:"What happens after election results are declared in India?"},
+  {title:"Government formation & oath of office",sub:"President invites majority leader",
+   desc:"The party crossing 272 seats is invited by the President to form the government. The leader is sworn in as Prime Minister at Rashtrapati Bhavan by the Chief Justice of India.",
+   kv:[{l:"Majority",v:"272 / 543 seats"},{l:"Invites",v:"President of India"},{l:"Sworn by",v:"Chief Justice of India"}],
+   chips:["Coalition governments also valid","PM recommends cabinet","Oath of office + secrecy"],
+   ask:"How does government formation work after Indian general elections?"},
+];
+
+const TIMELINE_DATA=[
+  {tag:"Before elections",title:"Announcement & MCC",sub:"ECI announces; MCC kicks in immediately",
+   detail:"The ECI issues the official schedule via Gazette notification. The Model Code of Conduct activates instantly — ruling party cannot announce new schemes or misuse government machinery.",
+   facts:["MCC activated instantly","Multi-phase dates notified","Binding on all parties"]},
+  {tag:"~4 weeks before",title:"Nominations filed",sub:"Candidates submit papers with deposit & affidavit",
+   detail:"Any citizen aged 25+ for Lok Sabha can contest. Must declare assets, criminal record, and pay ₹25,000 security deposit (₹12,500 for SC/ST).",
+   facts:["₹25,000 deposit","Age 25+ requirement","Full asset declaration"]},
+  {tag:"~3 weeks before",title:"Scrutiny & withdrawal",sub:"Papers verified; 2-day window to withdraw",
+   detail:"The Returning Officer scrutinizes every nomination paper. Candidates have ~2 days to withdraw. Final candidate list published and election symbols allotted.",
+   facts:["2-day withdrawal window","Invalid papers rejected","Symbols allotted after deadline"]},
+  {tag:"Campaign period",title:"Campaigning + 48-hr silent period",sub:"All parties canvass; silence 48 hrs before polling",
+   detail:"Parties hold rallies, release manifestos, run digital campaigns. All spending is capped (₹95L for Lok Sabha). Campaigning stops 48 hours before polling.",
+   facts:["₹95L spend cap (LS)","48-hr silence enforced","Paid news banned"]},
+  {tag:"Polling day",title:"Voting via EVM + VVPAT",sub:"Booths open 7 AM–6 PM nationwide",
+   detail:"Voters present valid ID, receive indelible ink on left index finger, and vote on EVM. VVPAT machine prints a paper slip showing the voted candidate for 7 seconds.",
+   facts:["EVM + VVPAT system","7 AM–6 PM timing","Indelible ink used"]},
+  {tag:"After polling",title:"Counting & result declaration",sub:"Postal ballots first, then round-by-round EVM counting",
+   detail:"EVMs stored in sealed strong rooms under 24/7 CCTV. On counting day, postal ballots tallied first, then EVM counting table by table. 5 VVPAT slips per seat physically verified.",
+   facts:["Postal ballots counted first","5 VVPAT slips verified per seat","Returning Officer declares result"]},
+  {tag:"Final stage",title:"Government formation & oath",sub:"272+ seats → President invites majority leader",
+   detail:"The party crossing 272 seats is invited by the President to form the government. The leader is sworn in as PM by the Chief Justice of India at Rashtrapati Bhavan.",
+   facts:["272 seats for majority","President invites leader","Chief Justice administers oath"]},
+];
+
+/* ════════════════════════════════════════
+   EXPANDED RANDOMIZED QUIZ BANK (20 questions)
+════════════════════════════════════════ */
+const ALL_QUIZ=[
+  {q:"What is the minimum age to contest a Lok Sabha election?",opts:["18 years","21 years","25 years","30 years"],ans:2,exp:"The minimum age to contest Lok Sabha (and Vidhan Sabha) elections is 25 years. For Rajya Sabha and Vidhan Parishad it is 30 years."},
+  {q:"What does VVPAT stand for?",opts:["Voter Verified Paper Audit Trail","Verified Voting Paper Audit Test","Voter Validated Paper Audit Track","Verified Voter Paper Assessment Trail"],ans:0,exp:"VVPAT — Voter Verified Paper Audit Trail — prints a slip showing which candidate you voted for, visible for 7 seconds, as a physical verification mechanism."},
+  {q:"When does the Model Code of Conduct come into force?",opts:["On polling day","When nominations open","The moment election dates are announced","7 days before polling"],ans:2,exp:"The MCC activates the instant the Election Commission announces the election schedule — not on polling day or when nominations open."},
+  {q:"How many hours before polling must all campaigning stop?",opts:["12 hours","24 hours","36 hours","48 hours"],ans:3,exp:"All election campaigning must cease 48 hours before polling begins — the statutory 'silent period'. Violating it is a criminal offence."},
+  {q:"What is the security deposit for a general (non-SC/ST) Lok Sabha candidate?",opts:["₹10,000","₹15,000","₹25,000","₹50,000"],ans:2,exp:"A general category candidate must pay ₹25,000 as security deposit. SC/ST candidates pay ₹12,500. It is forfeited if they fail to secure 1/6th of valid votes."},
+  {q:"What is NOTA in Indian elections?",opts:["None Of The Above — rejecting all candidates","National Online Turnout Assessment","New Order Tally Arrangement","National Opposition Tally Act"],ans:0,exp:"NOTA (None Of The Above) lets voters formally reject all candidates. Introduced by the Supreme Court in 2013."},
+  {q:"How many Lok Sabha seats does a party need for a majority government?",opts:["200 seats","250 seats","272 seats","300 seats"],ans:2,exp:"A party needs 272 out of 543 Lok Sabha seats (simple majority) to form the government on its own."},
+  {q:"Under which Article of the Constitution is the Election Commission established?",opts:["Article 280","Article 312","Article 324","Article 356"],ans:2,exp:"The Election Commission of India is established under Article 324 of the Constitution, which vests superintendence, direction, and control of elections in the ECI."},
+  {q:"Which finger receives indelible ink when voting in India?",opts:["Right index finger","Left index finger","Right thumb","Left thumb"],ans:1,exp:"Indelible ink is applied to the left index finger of voters to prevent double voting. The ink cannot be washed off for days."},
+  {q:"What is the polling booth timing in India's general elections?",opts:["6 AM – 5 PM","7 AM – 6 PM","8 AM – 6 PM","9 AM – 7 PM"],ans:1,exp:"Polling booths in India typically open at 7 AM and close at 6 PM on polling day, giving voters 11 hours to cast their vote."},
+  {q:"How many days after results can an Election Petition be filed in India?",opts:["15 days","30 days","45 days","60 days"],ans:2,exp:"An unsuccessful candidate or any elector can file an Election Petition in the appropriate High Court within 45 days of the result being declared."},
+  {q:"What does EVM stand for?",opts:["Electronic Voting Machine","Electronic Vote Monitor","Election Verification Machine","Electronic Voter Module"],ans:0,exp:"EVM stands for Electronic Voting Machine. It replaced paper ballots in Indian elections and is used along with VVPAT since 2019 for full transparency."},
+  {q:"Who administers the oath of office to India's Prime Minister?",opts:["Speaker of Lok Sabha","Chief Justice of India","President of India","Vice President of India"],ans:2,exp:"The President of India administers the oath of office and secrecy to the Prime Minister and members of the Council of Ministers."},
+  {q:"What is the campaign expenditure limit for a Lok Sabha candidate (general constituency)?",opts:["₹50 lakh","₹70 lakh","₹95 lakh","₹1.5 crore"],ans:2,exp:"The campaign expenditure limit for a Lok Sabha candidate in general constituencies is ₹95 lakh (revised in 2022). Smaller states have a limit of ₹75 lakh."},
+  {q:"In what year was the NOTA option introduced in Indian elections?",opts:["2009","2011","2013","2015"],ans:2,exp:"NOTA was introduced by a Supreme Court order in 2013 and was first used in assembly elections in November–December 2013."},
+  {q:"How many booths' VVPAT slips are randomly verified per Lok Sabha constituency?",opts:["2 booths","3 booths","5 booths","10 booths"],ans:2,exp:"As per the Supreme Court's 2019 order, 5 randomly selected polling booths' VVPAT paper slips are physically counted and matched with EVM results per Lok Sabha constituency."},
+  {q:"What is the minimum number of proposers required for nominating a candidate in a general constituency?",opts:["1 proposer","2 proposers","5 proposers","10 proposers"],ans:0,exp:"A candidate in a general constituency requires only 1 proposer who must be a registered voter of that constituency. For state assemblies the same rule applies."},
+  {q:"Who is the custodian of EVMs between polling day and counting day?",opts:["Local Police","District Collector / District Administration","Election Commission HQ","Home Ministry"],ans:1,exp:"The District Collector (Returning Officer) is the custodian of EVMs. They are stored in strong rooms under District Administration control with multi-party seals and 24/7 CCTV."},
+  {q:"Which category of voters cast 'postal ballots' in Indian elections?",opts:["NRI voters abroad","Senior citizens above 85","Service voters, senior citizens 85+, and persons with disabilities","Only armed forces personnel"],ans:2,exp:"Postal ballots are available to service voters (armed forces, police), senior citizens aged 85 and above, persons with disabilities (40%+), and COVID-positive patients."},
+  {q:"What is the star campaigner limit for a national/state-recognized party during elections?",opts:["20 star campaigners","30 star campaigners","40 star campaigners","50 star campaigners"],ans:2,exp:"A recognized national or state party can designate up to 40 star campaigners. Other registered parties can designate up to 20. Their expenses are not counted against individual candidates."},
+];
+
+function shuffleArray(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let QUIZ=[],qIdx=0,qScore=0;
+function initQuiz(){
+  QUIZ=shuffleArray(ALL_QUIZ).slice(0,7);
+  qIdx=0;qScore=0;
+}
+
+/* ════════════════════════════════════════
+   VIEW SWITCHING
+════════════════════════════════════════ */
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.htab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  const map={pipeline:0,timeline:1,quiz:2,chat:3};
+  document.querySelectorAll('.htab')[map[v]].classList.add('active');
+}
+
+/* ════════════════════════════════════════
+   PIPELINE
+════════════════════════════════════════ */
+let activeStep=0,activePhaseFilter=null;
+function filteredSteps(){return activePhaseFilter===null?STEPS.map((_,i)=>i):PHASES[activePhaseFilter].steps}
+
+function renderPhaseStrip(){
+  document.getElementById('pstrip').innerHTML=PHASES.map((p,i)=>{
+    const on=activePhaseFilter===i;
+    return `<div class="psi" onclick="filterPhase(${i})" style="${on?'background:'+p.bg:''}">
+      <div class="psi-dot" style="${on?'background:'+p.color+';opacity:1;box-shadow:0 0 7px '+p.color+'66;':''}"></div>
+      <div class="psi-name" style="${on?'color:'+p.tc+';font-weight:600;':''}">${p.name}</div>
+      <div class="psi-count">${p.steps.length} steps</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPipeline(){
+  const fs=filteredSteps(),curPos=fs.indexOf(activeStep);
+  document.getElementById('pipeline').innerHTML=fs.map((si,pos)=>{
+    const s=STEPS[si],ph=PHASES[phaseOf[si]];
+    const isActive=si===activeStep,isDone=curPos>pos,isOpen=isActive;
+    let icon=isDone
+      ?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(19,136,8,.2)" stroke="#138808" stroke-width="1.2"/><path d="M5 8.5l2 2 4-4" stroke="#81c784" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      :isActive
+        ?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(232,160,32,.15)" stroke="#e8a020" stroke-width="1.5"/><circle cx="8" cy="8" r="3" fill="#e8a020"/></svg>`
+        :(si+1);
+    return `<div class="pstep${isActive?' sa':''}${isDone?' sd':''}" onclick="setStep(${si})">
+      <div class="pleft"><div class="picon">${icon}</div><div class="pconn"></div></div>
+      <div class="pbody">
+        <div class="pheader">
+          <div><div class="ptitle">${s.title}</div><div class="psub">${s.sub}</div></div>
+          <span class="ptag" style="background:${ph.bg};color:${ph.tc}">${ph.name}</span>
+        </div>
+        <div class="pexpand${isOpen?' open':''}" id="pe-${si}">
+          <div class="pcard">
+            <div class="pdesc">${s.desc}</div>
+            <div class="pgrid">${s.kv.map(kv=>`<div class="pkv"><div class="pkv-lbl">${kv.l}</div><div class="pkv-val">${kv.v}</div></div>`).join('')}</div>
+            <div class="pchips">${s.chips.map(c=>`<span class="pchip">${c}</span>`).join('')}</div>
+            <button class="askbtn" onclick="event.stopPropagation();askAndSwitch('${s.ask.replace(/'/g,"\\'")}')">Ask AI about this ↗</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const total=fs.length,pos=curPos<0?0:curPos;
+  const pct=total>1?Math.round((pos/(total-1))*100):100;
+  document.getElementById('progfill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('nav-info').textContent=`Step ${pos+1} of ${total}`;
+  document.getElementById('btn-prev').disabled=pos===0;
+  document.getElementById('btn-next').textContent=pos===total-1?'Restart ↺':'Next →';
+  document.getElementById('prog-phase-lbl').textContent=activePhaseFilter!==null?PHASES[activePhaseFilter].name:'All Phases';
+  // update scene
+  startScene(activeStep);
+}
+
+function setStep(si){
+  activeStep=si;renderPipeline();
+  const els=document.querySelectorAll('#pipeline .pstep');
+  const idx=filteredSteps().indexOf(si);
+  if(els[idx])setTimeout(()=>els[idx].scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+}
+function navigate(dir){
+  const fs=filteredSteps(),cur=fs.indexOf(activeStep);
+  if(cur===-1){setStep(fs[0]);return}
+  const next=cur+dir;
+  if(next<0)return;
+  if(next>=fs.length){setStep(fs[0]);return}
+  setStep(fs[next]);
+}
+function filterPhase(i){
+  activePhaseFilter=activePhaseFilter===i?null:i;
+  if(activePhaseFilter!==null)activeStep=PHASES[i].steps[0];
+  renderPhaseStrip();renderPipeline();
+}
+
+/* ════════════════════════════════════════
+   TIMELINE
+════════════════════════════════════════ */
+let openTl=null;
+function buildTimeline(){
+  const tags=[
+    {bg:"rgba(232,160,32,.15)",tc:"#f5b942"},{bg:"rgba(79,195,247,.12)",tc:"#80d8ff"},
+    {bg:"rgba(79,195,247,.12)",tc:"#80d8ff"},{bg:"rgba(255,140,0,.12)",tc:"#ffb74d"},
+    {bg:"rgba(19,136,8,.15)",tc:"#81c784"},{bg:"rgba(19,136,8,.15)",tc:"#81c784"},
+    {bg:"rgba(206,147,216,.12)",tc:"#e1bee7"},
+  ];
+  document.getElementById('tlwrap').innerHTML=TIMELINE_DATA.map((item,i)=>{
+    const t=tags[i];
+    return `<div class="tlitem" id="tl-${i}" onclick="toggleTl(${i})">
+      <div class="tldot"></div>
+      <div class="tlcard">
+        <div class="tltop">
+          <div><div class="tltitle">${item.title}</div><div class="tlsub">${item.sub}</div></div>
+          <span class="tltag" style="background:${t.bg};color:${t.tc}">${item.tag}</span>
+        </div>
+        <div class="tldetail">
+          <div class="tltext">${item.detail}</div>
+          <div class="tlfacts">${item.facts.map(f=>`<span class="tlfact">${f}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleTl(i){
+  if(openTl!==null&&openTl!==i)document.getElementById('tl-'+openTl).classList.remove('open');
+  const el=document.getElementById('tl-'+i);el.classList.toggle('open');
+  openTl=el.classList.contains('open')?i:null;
+}
+
+/* ════════════════════════════════════════
+   RANDOMIZED QUIZ
+════════════════════════════════════════ */
+function buildQuiz(){
+  if(qIdx>=QUIZ.length){
+    const pct=Math.round((qScore/QUIZ.length)*100);
+    const medals=[['🥇','Outstanding! You truly know India\'s democracy.'],[`🥈`,'Great effort! Keep exploring.'],[`📚`,'Democracy needs informed citizens — keep learning!']];
+    const [medal,msg]=pct>=80?medals[0]:pct>=50?medals[1]:medals[2];
+    document.getElementById('quiz-area').innerHTML=`<div class="qdone">
+      <div class="qdone-score">${qScore}/${QUIZ.length}</div>
+      <div class="qbadge">${medal} ${pct}% score</div>
+      <div class="qdone-lbl">${msg}<br><small style="opacity:.6">New random questions every attempt!</small></div>
+      <button class="resetbtn" onclick="resetQuiz()">Try again with new questions</button>
+    </div>`;return;
+  }
+  const q=QUIZ[qIdx];
+  document.getElementById('q-progress').textContent=`Question ${qIdx+1} of ${QUIZ.length}`;
+  document.getElementById('q-score').textContent=`${qScore}/${qIdx}`;
+  // Shuffle options but track correct answer
+  const optIndices=shuffleArray([0,1,2,3]);
+  const correctOpt=optIndices.indexOf(q.ans);
+  const shuffledOpts=optIndices.map(i=>q.opts[i]);
+  const optsJSON=JSON.stringify(shuffledOpts).replace(/"/g,'&quot;');
+  document.getElementById('quiz-area').innerHTML=`<div class="qcard">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:1.5rem;">
+      <div class="qq" style="margin-bottom:0">${q.q}</div>
+      <button id="quiz-hint-btn" onclick="getAIHint(${JSON.stringify(q.q).replace(/'/g,"&#39;")},${optsJSON})" style="flex-shrink:0;font-size:11px;padding:5px 12px;border:1px solid var(--border2);border-radius:20px;background:var(--golddim);color:var(--gold2);cursor:pointer;font-family:var(--fbody);font-weight:500;white-space:nowrap;transition:all .15s;" onmouseover="this.style.background='rgba(232,160,32,.25)'" onmouseout="this.style.background='var(--golddim)'">AI Hint 💡</button>
+    </div>
+    <div id="quiz-hint-box" style="display:none;font-size:12px;color:#ffb74d;background:rgba(255,140,0,.1);border:1px solid rgba(255,140,0,.25);border-radius:8px;padding:9px 13px;margin-bottom:12px;line-height:1.6;"></div>
+    <div class="qopts">${shuffledOpts.map((o,i)=>`<button class="qopt" id="qo-${i}" onclick="answerQ(${i},${correctOpt})">${o}</button>`).join('')}</div>
+    <div class="qfb" id="qfb"></div>
+  </div>`;
+}
+function answerQ(chosen,correct){
+  document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('qfb');
+  if(chosen===correct){
+    document.getElementById('qo-'+chosen).classList.add('correct');
+    fb.className='qfb show pass';fb.textContent='✓ Correct! '+QUIZ[qIdx].exp;qScore++;
+  }else{
+    document.getElementById('qo-'+chosen).classList.add('wrong');
+    document.getElementById('qo-'+correct).classList.add('correct');
+    fb.className='qfb show fail';fb.textContent='✗ '+QUIZ[qIdx].exp;
+  }
+  document.getElementById('q-score').textContent=`${qScore}/${qIdx+1}`;
+  qIdx++;setTimeout(buildQuiz,2400);
+}
+function resetQuiz(){initQuiz();buildQuiz();}
+
+/* ════════════════════════════════════════
+   AI/ML ENGINE — ElectIQ Chat
+   • Claude-in-Claude API (auth handled by artifact env)
+   • Conversation memory (multi-turn context)
+   • Typewriter streaming effect
+   • Smart intent detection & topic tagging
+   • AI quiz hint system
+   • Suggested follow-ups
+════════════════════════════════════════ */
+
+const ELECTIQ_SYSTEM = `You are ElectIQ, an expert AI assistant specializing in India's democratic election process. You have deep knowledge of:
+- The Election Commission of India and its constitutional powers (Article 324)
+- The complete election lifecycle: announcement, nominations, scrutiny, campaigning, polling, counting, results, government formation
+- EVMs, VVPATs, postal ballots, NOTA, Model Code of Conduct
+- Constitutional provisions, Supreme Court judgments on elections
+- Comparative global election systems when relevant
+- Real statistics: 2024 Lok Sabha turnout 66.4%, 543 constituencies, 272 majority threshold
+
+Rules:
+- Respond in plain prose only. No markdown, no bullet points, no headers.
+- Keep answers under 120 words unless the user explicitly asks for more detail.
+- Always be factual and cite specific articles, figures, or dates when relevant.
+- If unsure, say so clearly rather than guessing.
+- Tone: authoritative, engaging, accessible — like a knowledgeable civic educator.
+- At the end of longer answers, suggest one natural follow-up question the user might want to ask next, prefixed with "You might also ask: " on a new line.`;
+
+// Conversation memory — stores full multi-turn history
+let chatHistory = [];
+let isTyping = false;
+
+// Intent detection — maps keywords to topic tags for UX hints
+const INTENT_MAP = [
+  {tags:['evm','electronic voting','voting machine'],label:'🖥 EVM Technology',color:'#4fc3f7'},
+  {tags:['vvpat','paper slip','audit trail'],label:'🧾 VVPAT System',color:'#81c784'},
+  {tags:['nota','none of the above'],label:'✗ NOTA',color:'#ef9a9a'},
+  {tags:['mcc','model code','conduct'],label:'📋 Model Code',color:'#ffb74d'},
+  {tags:['nomination','candidate','deposit'],label:'📝 Nominations',color:'#ce93d8'},
+  {tags:['counting','result','declare'],label:'📊 Vote Counting',color:'#f5b942'},
+  {tags:['president','prime minister','oath','government'],label:'🏛 Govt Formation',color:'#e8a020'},
+  {tags:['poll','vote','booth','ballot'],label:'🗳 Polling Process',color:'#66bb6a'},
+  {tags:['campaign','rally','expenditure','spend'],label:'📣 Campaigning',color:'#ff8c00'},
+];
+
+function detectIntent(text) {
+  const lc = text.toLowerCase();
+  for (const intent of INTENT_MAP) {
+    if (intent.tags.some(tag => lc.includes(tag))) return intent;
+  }
+  return null;
+}
+
+async function sendChat() {
+  if (isTyping) return;
+  const input = document.getElementById('chat-in');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.disabled = true;
+
+  // Detect intent and show topic tag
+  const intent = detectIntent(text);
+
+  // Add user message to UI
+  addMsg(text, 'user', intent);
+
+  // Add to history
+  chatHistory.push({ role: 'user', content: text });
+
+  // Keep history to last 10 turns (5 exchanges) to manage context
+  if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
+  isTyping = true;
+  const typingEl = addTypingIndicator();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: ELECTIQ_SYSTEM,
+        messages: chatHistory
+      })
+    });
+
+    const data = await res.json();
+    typingEl.remove();
+
+    let fullText = '';
+    if (data.content && data.content[0] && data.content[0].text) {
+      fullText = data.content[0].text;
+    } else if (data.error) {
+      fullText = 'API error: ' + (data.error.message || 'Unknown error. Please try again.');
+    } else {
+      fullText = 'Something went wrong. Please try again.';
+    }
+
+    // Add assistant response to history
+    chatHistory.push({ role: 'assistant', content: fullText });
+
+    // Split follow-up suggestion if present
+    let mainText = fullText;
+    let followUp = null;
+    const followUpIdx = fullText.indexOf('You might also ask:');
+    if (followUpIdx !== -1) {
+      mainText = fullText.slice(0, followUpIdx).trim();
+      followUp = fullText.slice(followUpIdx + 'You might also ask:'.length).trim().replace(/^["']|["']$/g,'');
+    }
+
+    // Typewriter effect
+    await typewriterMsg(mainText, 'bot');
+
+    // Show follow-up suggestion as clickable chip
+    if (followUp) addFollowUpChip(followUp);
+
+  } catch (e) {
+    typingEl.remove();
+    // Fallback: try to answer from local knowledge base
+    const fallback = localKnowledgeFallback(text);
+    await typewriterMsg(fallback, 'bot');
+    addMsg('⚠ AI unavailable — showing cached response. Check connection for live AI.', 'hint');
+  }
+
+  isTyping = false;
+  input.disabled = false;
+  input.focus();
+  document.getElementById('chat-msgs').scrollTop = 99999;
+}
+
+// ── Local knowledge fallback (offline mode) ──
+const LOCAL_KB = {
+  evm: "An Electronic Voting Machine (EVM) is a standalone electronic device used in Indian elections since 1989. It has two units: the Control Unit with the polling officer and the Balloting Unit with the voter. The voter presses a button beside their candidate's name. EVMs replaced paper ballots to eliminate booth capturing and invalid votes. They are tested in mock polls before election day and sealed after voting.",
+  vvpat: "VVPAT — Voter Verified Paper Audit Trail — was introduced nationwide in 2019. When a voter presses the EVM button, the VVPAT machine attached to it prints a paper slip showing the candidate's name, symbol, and serial number. The slip is visible through a transparent window for 7 seconds before it falls into a sealed box. The Supreme Court ordered that 5 random booths per Lok Sabha constituency have their VVPAT slips physically counted.",
+  nota: "NOTA (None Of The Above) was introduced after a Supreme Court directive in October 2013. It allows a voter to formally reject all candidates on the ballot. The NOTA option appears at the bottom of the EVM list. If NOTA receives the highest votes in a constituency, the candidate with the next highest votes is declared the winner — the election is not voided automatically.",
+  mcc: "The Model Code of Conduct is a set of guidelines issued by the Election Commission. It comes into force the instant election dates are announced. It prohibits the ruling government from: announcing new policy schemes, using government vehicles or machinery for campaign work, making new appointments that could influence voters, and making communally or casteist appeals. It remains in force until results are declared.",
+  vote: "To vote in India you must be: a citizen of India, at least 18 years old on the qualifying date (January 1 of the election year), ordinarily resident in the constituency, and registered on the electoral roll. You cannot vote if you are of unsound mind as declared by a court, imprisoned, or disqualified under any election law.",
+  president: "India's President is elected indirectly through an Electoral College consisting of elected members of both Houses of Parliament (Rajya Sabha and Lok Sabha) and elected members of all State Legislative Assemblies. The voting uses the Single Transferable Vote method with proportional representation. The value of each vote differs based on the population of the state and the number of legislators.",
+  government: "After results, the party or coalition that commands 272 or more seats in the 543-seat Lok Sabha is invited by the President of India to form the government. The President invites the leader of that party to be sworn in as Prime Minister. The oath of office and secrecy is administered by the President at Rashtrapati Bhavan. The PM then recommends cabinet members who are also sworn in.",
+};
+
+function localKnowledgeFallback(text) {
+  const lc = text.toLowerCase();
+  if (lc.includes('evm') || lc.includes('electronic vot')) return LOCAL_KB.evm;
+  if (lc.includes('vvpat') || lc.includes('paper slip')) return LOCAL_KB.vvpat;
+  if (lc.includes('nota')) return LOCAL_KB.nota;
+  if (lc.includes('model code') || lc.includes('mcc')) return LOCAL_KB.mcc;
+  if (lc.includes('vote') || lc.includes('elig') || lc.includes('who can')) return LOCAL_KB.vote;
+  if (lc.includes('president')) return LOCAL_KB.president;
+  if (lc.includes('government') || lc.includes('prime minister') || lc.includes('oath')) return LOCAL_KB.government;
+  return "I'm currently offline. Please check your internet connection to get live AI-powered answers. You can explore the Timeline, Pipeline, and Quiz tabs for detailed election information.";
+}
+
+// ── UI helpers ──
+function addMsg(text, type, intent) {
+  const msgs = document.getElementById('chat-msgs');
+  const wrap = document.createElement('div');
+  wrap.style.display = 'flex';
+  wrap.style.flexDirection = 'column';
+  wrap.style.alignItems = type === 'user' ? 'flex-end' : 'flex-start';
+  wrap.style.gap = '4px';
+
+  if (intent && type === 'user') {
+    const tag = document.createElement('span');
+    tag.style.cssText = `font-size:10px;padding:2px 8px;border-radius:20px;background:${intent.color}22;color:${intent.color};border:1px solid ${intent.color}44;font-family:var(--fbody);font-weight:500;`;
+    tag.textContent = intent.label;
+    wrap.appendChild(tag);
+  }
+
+  const div = document.createElement('div');
+  div.className = type === 'user' ? 'msg msguser'
+    : type === 'hint' ? 'msg'
+    : 'msg msgbot';
+  if (type === 'hint') {
+    div.style.cssText = 'font-size:10px;color:var(--muted);font-style:italic;padding:2px 0;align-self:flex-start;';
+  }
+  div.textContent = text;
+  wrap.appendChild(div);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function addTypingIndicator() {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'msg msgbot';
+  div.style.display = 'flex'; div.style.gap = '5px'; div.style.alignItems = 'center';
+  div.style.padding = '12px 16px';
+  div.innerHTML = `
+    <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:dotpulse 1.2s .0s infinite;opacity:.4"></span>
+    <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:dotpulse 1.2s .2s infinite;opacity:.4"></span>
+    <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:dotpulse 1.2s .4s infinite;opacity:.4"></span>`;
+  if (!document.getElementById('dotpulse-style')) {
+    const s = document.createElement('style');
+    s.id = 'dotpulse-style';
+    s.textContent = '@keyframes dotpulse{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}';
+    document.head.appendChild(s);
+  }
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function typewriterMsg(text, type) {
+  const msgs = document.getElementById('chat-msgs');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-direction:column;align-items:flex-start;gap:4px;';
+  const div = document.createElement('div');
+  div.className = 'msg msgbot';
+  div.textContent = '';
+  wrap.appendChild(div);
+  msgs.appendChild(wrap);
+
+  const speed = Math.max(8, Math.min(22, Math.floor(2000 / text.length)));
+  for (let i = 0; i < text.length; i++) {
+    div.textContent += text[i];
+    if (i % 3 === 0) msgs.scrollTop = msgs.scrollHeight;
+    await new Promise(r => setTimeout(r, speed));
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function addFollowUpChip(text) {
+  const msgs = document.getElementById('chat-msgs');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:2px;';
+  const label = document.createElement('span');
+  label.style.cssText = 'font-size:10px;color:var(--muted);padding:0 2px;font-family:var(--fbody);';
+  label.textContent = 'Suggested follow-up:';
+  const btn = document.createElement('button');
+  btn.style.cssText = `font-size:11px;padding:5px 13px;border:1px solid var(--border2);border-radius:20px;background:var(--golddim);color:var(--gold2);cursor:pointer;font-family:var(--fbody);font-weight:500;transition:all .15s;text-align:left;`;
+  btn.textContent = '↪ ' + text;
+  btn.onclick = () => {
+    document.getElementById('chat-in').value = text.replace(/^["'?]|["'?]$/g,'').trim();
+    wrap.remove();
+    sendChat();
+  };
+  btn.onmouseover = () => btn.style.background = 'rgba(232,160,32,.25)';
+  btn.onmouseout = () => btn.style.background = 'var(--golddim)';
+  wrap.appendChild(label); wrap.appendChild(btn);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function clearChat() {
+  chatHistory = [];
+  const msgs = document.getElementById('chat-msgs');
+  msgs.innerHTML = '<div class="msg msgbot">Chat cleared. Memory reset. Ask me anything about India\'s elections!</div>';
+}
+
+function askQ(q) { switchView('chat'); document.getElementById('chat-in').value = q; sendChat(); }
+function askAndSwitch(q) { switchView('chat'); document.getElementById('chat-in').value = q; sendChat(); }
+
+/* ── AI Quiz Hint System ── */
+async function getAIHint(questionText, options) {
+  const hintBtn = document.getElementById('quiz-hint-btn');
+  if (!hintBtn || hintBtn.disabled) return;
+  hintBtn.disabled = true;
+  hintBtn.textContent = 'Loading hint…';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 120,
+        system: 'You are a quiz hint generator for an Indian election education app. Give a SHORT hint (1-2 sentences, max 40 words) that helps the user think toward the correct answer WITHOUT revealing it directly. Be cryptic but helpful.',
+        messages: [{ role: 'user', content: `Question: "${questionText}"\nOptions: ${options.join(', ')}\nGive a hint.` }]
+      })
+    });
+    const data = await res.json();
+    const hint = data.content?.[0]?.text || 'Think about the constitutional provisions governing elections in India.';
+    const hintBox = document.getElementById('quiz-hint-box');
+    if (hintBox) {
+      hintBox.textContent = '💡 ' + hint;
+      hintBox.style.display = 'block';
+      hintBox.style.animation = 'fadeUp .3s ease';
+    }
+    hintBtn.textContent = 'Hint used';
+  } catch(e) {
+    const hintBox = document.getElementById('quiz-hint-box');
+    if (hintBox) {
+      hintBox.textContent = '💡 Think about the constitutional framework and ECI powers.';
+      hintBox.style.display = 'block';
+    }
+    hintBtn.textContent = 'Hint used';
+  }
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+renderPhaseStrip();
+renderPipeline();
+buildTimeline();
+initQuiz();buildQuiz();
+</script>
+</body>
+</html>
