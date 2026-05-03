@@ -1,0 +1,20 @@
+{
+  "name": "electiq",
+  "version": "1.0.0",
+  "description": "AI-powered India election process education platform — Hack2Skill Virtual PromptWars by Google",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "npx serve src -p 8080",
+    "dev": "npx serve src -p 3000 --live",
+    "docker:build": "docker build -t electiq .",
+    "docker:run": "docker run -p 8080:8080 electiq",
+    "docker:push": "docker tag electiq gcr.io/$PROJECT_ID/electiq && docker push gcr.io/$PROJECT_ID/electiq",
+    "deploy": "gcloud run deploy electiq --source . --region asia-south1 --allow-unauthenticated"
+  },
+  "keywords": ["election", "india", "civic", "education", "ai", "claude", "anthropic", "hack2skill", "google"],
+  "author": "ElectIQ Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
